@@ -7,11 +7,9 @@ import {
   MenuItem,
   Select,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  Tabs,
+  Tab,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DataFilters from './DataFilters';
 import DerivedFields from './DerivedFields';
 import JoinTables from './JoinTables';
@@ -25,7 +23,7 @@ const RuleEngine = () => {
   const [derivedFields, setDerivedFields] = useState({});
   const [joins, setJoins] = useState([]);
   const [schedulerConfig, setSchedulerConfig] = useState({});
-  const [expanded, setExpanded] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const tables = ['Customer', 'Account', 'Transaction']; // Example tables
 
@@ -42,8 +40,8 @@ const RuleEngine = () => {
     setDerivedFields(newDerivedFields);
   };
 
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
   };
 
   const clearAllTables = () => {
@@ -101,75 +99,54 @@ const RuleEngine = () => {
         </Box>
       </Box>
 
-      <Accordion expanded={expanded === 'panel1'} onChange={handleAccordionChange('panel1')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Derived Fields</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <DerivedFields
-            selectedTables={selectedTables}
-            derivedFields={derivedFields}
-            setDerivedFields={setDerivedFields}
-          />
-        </AccordionDetails>
-      </Accordion>
+      <Tabs value={tabIndex} onChange={handleTabChange}>
+        <Tab label="Derived Fields" />
+        <Tab label="Data Filters" />
+        {selectedTables.length > 1 && <Tab label="Join Tables" />}
+        <Tab label="Validation Rules" />
+        <Tab label="Scheduler" />
+      </Tabs>
 
-      <Accordion expanded={expanded === 'panel2'} onChange={handleAccordionChange('panel2')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Data Filters</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <DataFilters
-            selectedTables={selectedTables}
-            conditions={conditions}
-            setConditions={setConditions}
-            derivedFields={derivedFields}
-          />
-        </AccordionDetails>
-      </Accordion>
-
-      {selectedTables.length > 1 && (
-        <Accordion expanded={expanded === 'panel3'} onChange={handleAccordionChange('panel3')}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Join Tables</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <JoinTables
-              joins={joins}
-              setJoins={setJoins}
-              tables={tables}
-            />
-          </AccordionDetails>
-        </Accordion>
+      {tabIndex === 0 && (
+        <DerivedFields
+          selectedTables={selectedTables}
+          derivedFields={derivedFields}
+          setDerivedFields={setDerivedFields}
+        />
       )}
 
-      {selectedTables.length > 0 && (
-        <Accordion expanded={expanded === 'panel4'} onChange={handleAccordionChange('panel4')}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Validation Rules</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ValidationRules
-              selectedTables={selectedTables}
-              validationRules={validationRules}
-              setValidationRules={setValidationRules}
-              derivedFields={derivedFields}
-            />
-          </AccordionDetails>
-        </Accordion>
+      {tabIndex === 1 && (
+        <DataFilters
+          selectedTables={selectedTables}
+          conditions={conditions}
+          setConditions={setConditions}
+          derivedFields={derivedFields}
+        />
       )}
 
-      <Accordion expanded={expanded === 'panel5'} onChange={handleAccordionChange('panel5')}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Scheduler</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Scheduler
-            schedulerConfig={schedulerConfig}
-            setSchedulerConfig={setSchedulerConfig}
-          />
-        </AccordionDetails>
-      </Accordion>
+      {tabIndex === 2 && selectedTables.length > 1 && (
+        <JoinTables
+          joins={joins}
+          setJoins={setJoins}
+          tables={tables}
+        />
+      )}
+
+      {tabIndex === 3 && selectedTables.length > 0 && (
+        <ValidationRules
+          selectedTables={selectedTables}
+          validationRules={validationRules}
+          setValidationRules={setValidationRules}
+          derivedFields={derivedFields}
+        />
+      )}
+
+      {tabIndex === 4 && (
+        <Scheduler
+          schedulerConfig={schedulerConfig}
+          setSchedulerConfig={setSchedulerConfig}
+        />
+      )}
     </Box>
   );
 };
