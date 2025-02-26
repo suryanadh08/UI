@@ -54,7 +54,7 @@ const ExecutionResults = () => {
     <Box sx={{ marginTop: 4 }}>
       <Typography variant="h6">Execution Results</Typography>
       <FormControl fullWidth sx={{ marginBottom: 2 }}>
-        <InputLabel>Select Rule Engine</InputLabel>
+        <InputLabel>Select a Rule Engine</InputLabel>
         <Select value={selectedRuleEngine} onChange={handleRuleEngineChange}>
           {ruleEngines.map((ruleEngine) => (
             <MenuItem key={ruleEngine} value={ruleEngine}>
@@ -65,12 +65,12 @@ const ExecutionResults = () => {
       </FormControl>
       {executions.length > 0 && (
         <Box>
-          <Typography variant="subtitle1">Executions in the last month</Typography>
+          <Typography variant="subtitle1">Executions in the Last Month</Typography>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Execution Date</TableCell>
+                <TableCell>Execution Status</TableCell>
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>

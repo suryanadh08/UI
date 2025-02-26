@@ -124,7 +124,7 @@ const DataFilters = ({ selectedTables, conditions, setConditions, derivedFields 
                       </Select>
                     </FormControl>
                     {condition.type === 'manual' ? (
-                      <TextField sx={{ marginRight: 2, minWidth: 150 }} label="Value" value={condition.value} onChange={(e) => {
+                      <TextField sx={{ marginRight: 2, minWidth: 150 }} label="Enter Value" value={condition.value} onChange={(e) => {
                         const newConditions = [...conditions[table]];
                         newConditions[index].value = e.target.value;
                         setConditions({ ...conditions, [table]: newConditions });
@@ -223,7 +223,7 @@ const DataFilters = ({ selectedTables, conditions, setConditions, derivedFields 
                     </Select>
                   </FormControl>
                   {nestedCondition.type === 'manual' ? (
-                    <TextField sx={{ marginRight: 2, minWidth: 150 }} label="Value" value={nestedCondition.value} onChange={(e) => {
+                    <TextField sx={{ marginRight: 2, minWidth: 150 }} label="Enter Value" value={nestedCondition.value} onChange={(e) => {
                       const newConditions = [...conditions[table]];
                       newConditions[index].nestedConditions[nestedIndex].value = e.target.value;
                       setConditions({ ...conditions, [table]: newConditions });

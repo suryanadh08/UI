@@ -59,7 +59,7 @@ const ValidationRules = ({ selectedTables, validationRules, setValidationRules, 
               </Select>
             </FormControl>
             <FormControl sx={{ marginRight: 2, minWidth: 120 }}>
-              <InputLabel>Operator</InputLabel>
+              <InputLabel>Condition</InputLabel>
               <Select value={rule.operator} onChange={(e) => {
                 const newValidationRules = [...validationRules];
                 newValidationRules[index].operator = e.target.value;
@@ -114,11 +114,11 @@ const ValidationRules = ({ selectedTables, validationRules, setValidationRules, 
                   }}>
                     <MenuItem value="manual">Manual</MenuItem>
                     <MenuItem value="field">Field</MenuItem>
-                    <MenuItem value="derived">Derived</MenuItem>
+                    <MenuItem value="derived">Derived Field</MenuItem>
                   </Select>
                 </FormControl>
                 {rule.type === 'manual' ? (
-                  <TextField sx={{ marginRight: 2, minWidth: 120 }} label="Value" value={rule.value} onChange={(e) => {
+                  <TextField sx={{ marginRight: 2, minWidth: 120 }} label="Enter Value" value={rule.value} onChange={(e) => {
                     const newValidationRules = [...validationRules];
                     newValidationRules[index].value = e.target.value;
                     setValidationRules(newValidationRules);
@@ -181,7 +181,7 @@ const ValidationRules = ({ selectedTables, validationRules, setValidationRules, 
                 </Select>
               </FormControl>
               <FormControl sx={{ marginRight: 2, minWidth: 120 }}>
-                <InputLabel>Operator</InputLabel>
+                <InputLabel>Condition</InputLabel>
                 <Select value={nestedRule.operator} onChange={(e) => {
                   const newValidationRules = [...validationRules];
                   newValidationRules[index].nestedConditions[nestedIndex].operator = e.target.value;
@@ -203,11 +203,11 @@ const ValidationRules = ({ selectedTables, validationRules, setValidationRules, 
                 }}>
                   <MenuItem value="manual">Manual</MenuItem>
                   <MenuItem value="field">Field</MenuItem>
-                  <MenuItem value="derived">Derived</MenuItem>
+                  <MenuItem value="derived">Derived Field</MenuItem>
                 </Select>
               </FormControl>
               {nestedRule.type === 'manual' ? (
-                <TextField sx={{ marginRight: 2, minWidth: 120 }} label="Value" value={nestedRule.value} onChange={(e) => {
+                <TextField sx={{ marginRight: 2, minWidth: 120 }} label="Enter Value" value={nestedRule.value} onChange={(e) => {
                   const newValidationRules = [...validationRules];
                   newValidationRules[index].nestedConditions[nestedIndex].value = e.target.value;
                   setValidationRules(newValidationRules);

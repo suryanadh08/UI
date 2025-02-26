@@ -52,7 +52,7 @@ const ManagementInsights = () => {
     <Box sx={{ marginTop: 4 }}>
       <Typography variant="h6">Management Insights</Typography>
       <FormControl fullWidth sx={{ marginBottom: 2 }}>
-        <InputLabel>Chart Type</InputLabel>
+        <InputLabel>Select Chart Type</InputLabel>
         <Select value={chartType} onChange={handleChartTypeChange}>
           <MenuItem value="line">Line Chart</MenuItem>
           <MenuItem value="bar">Bar Chart</MenuItem>
@@ -61,10 +61,11 @@ const ManagementInsights = () => {
       </FormControl>
       {chartType && (
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="subtitle1">Chart Configuration</Typography>
+          <Typography variant="subtitle1">Configure Your Chart</Typography>
           <TextField
             fullWidth
             label="Chart Title"
+            placeholder="Enter chart title"
             value={chartConfig.title || ''}
             onChange={(e) => handleChartConfigChange('title', e.target.value)}
             sx={{ marginBottom: 2 }}
@@ -75,13 +76,15 @@ const ManagementInsights = () => {
           {data.map((dataPoint, index) => (
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
               <TextField
-                label="Name"
+                label="Data Point Name"
+                placeholder="Enter data point name"
                 value={dataPoint.name}
                 onChange={(e) => handleDataChange(index, 'name', e.target.value)}
                 sx={{ marginRight: 2 }}
               />
               <TextField
                 label="Value"
+                placeholder="Enter value"
                 type="number"
                 value={dataPoint.value}
                 onChange={(e) => handleDataChange(index, 'value', e.target.value)}

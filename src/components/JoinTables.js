@@ -42,7 +42,7 @@ const JoinTables = ({ joins, setJoins, tables }) => {
             </Select>
           </FormControl>
           <FormControl sx={{ marginRight: 2, minWidth: 120 }}>
-            <InputLabel>Field</InputLabel>
+            <InputLabel>First Field</InputLabel>
             <Select value={join.field1} onChange={(e) => {
               const newJoins = [...joins];
               newJoins[index].field1 = e.target.value;
@@ -56,7 +56,7 @@ const JoinTables = ({ joins, setJoins, tables }) => {
             </Select>
           </FormControl>
           <FormControl sx={{ marginRight: 2, minWidth: 120 }}>
-            <InputLabel>Operator</InputLabel>
+            <InputLabel>Condition</InputLabel>
             <Select value={join.operator} onChange={(e) => {
               const newJoins = [...joins];
               newJoins[index].operator = e.target.value;
@@ -84,7 +84,7 @@ const JoinTables = ({ joins, setJoins, tables }) => {
             </Select>
           </FormControl>
           <FormControl sx={{ marginRight: 2, minWidth: 120 }}>
-            <InputLabel>Field</InputLabel>
+            <InputLabel>Second Field</InputLabel>
             <Select value={join.field2} onChange={(e) => {
               const newJoins = [...joins];
               newJoins[index].field2 = e.target.value;
