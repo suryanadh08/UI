@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -10,6 +10,7 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import DataFilters from './DataFilters';
 import DerivedFields from './DerivedFields';
 import JoinTables from './JoinTables';
@@ -17,6 +18,7 @@ import ValidationRules from './ValidationRules';
 import Scheduler from './Scheduler';
 
 const RuleEngine = () => {
+  const location = useLocation();
   const [selectedTables, setSelectedTables] = useState([]);
   const [conditions, setConditions] = useState({});
   const [validationRules, setValidationRules] = useState([]);
@@ -26,6 +28,19 @@ const RuleEngine = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const tables = ['Customer', 'Account', 'Transaction']; // Example tables
+
+  useEffect(() => {
+    if (location.state && location.state.rule) {
+      const rule = location.state.rule;
+      // Load rule details into state
+      setSelectedTables(rule.selectedTables || []);
+      setConditions(rule.conditions || {});
+      setValidationRules(rule.validationRules || []);
+      setDerivedFields(rule.derivedFields || {});
+      setJoins(rule.joins || []);
+      setSchedulerConfig(rule.schedulerConfig || {});
+    }
+  }, [location.state]);
 
   const handleTableChange = (event) => {
     const selected = event.target.value;

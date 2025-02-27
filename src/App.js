@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import RuleEngine from './components/RuleEngine';
-import ExecutionResults from './components/ExecutionResults';
+import ProcessControl from './components/ProcessControl';
 import Dashboard from './components/Dashboard';
 import ExceptionWorkflow from './components/ExceptionWorkflow';
+import ConfiguredRules from './components/ConfiguredRules';
 
 const App = () => {
   return (
@@ -14,11 +14,8 @@ const App = () => {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Rule Engine
           </Typography>
-          <Button color="inherit" component={Link} to="/rule-engine">
-            Rule Engine
-          </Button>
-          <Button color="inherit" component={Link} to="/execution-results">
-            Execution Results
+          <Button color="inherit" component={Link} to="/process-control">
+            Process Control
           </Button>
           <Button color="inherit" component={Link} to="/dashboard">
             Dashboard
@@ -26,15 +23,18 @@ const App = () => {
           <Button color="inherit" component={Link} to="/exception-workflow">
             Exception Workflow
           </Button>
+          <Button color="inherit" component={Link} to="/configured-rules">
+            Configured Rules
+          </Button>
         </Toolbar>
       </AppBar>
       <Box sx={{ padding: 2 }}>
         <Routes>
-          <Route path="/rule-engine" element={<RuleEngine />} />
-          <Route path="/execution-results" element={<ExecutionResults />} />
+          <Route path="/process-control" element={<ProcessControl />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/exception-workflow" element={<ExceptionWorkflow />} />
-          <Route path="/" element={<RuleEngine />} />
+          <Route path="/configured-rules" element={<ConfiguredRules />} />
+          <Route path="/" element={<ProcessControl />} />
         </Routes>
       </Box>
     </Router>

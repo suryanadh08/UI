@@ -21,10 +21,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const ExceptionWorkflow = () => {
   const [failedBatches, setFailedBatches] = useState([
@@ -38,6 +42,24 @@ const ExceptionWorkflow = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedException, setSelectedException] = useState(null);
+  const [expandedProcessIndex, setExpandedProcessIndex] = useState(null);
+  const [showAllRecords, setShowAllRecords] = useState(false);
+
+  const processes = [
+    {
+      name: 'Process 1',
+      businessRules: [
+        { name: 'Business Rule 1', failedRecords: [{ id: 1, data: 'Record 1' }, { id: 2, data: 'Record 2' }], allRecords: [{ id: 1, data: 'Record 1' }, { id: 2, data: 'Record 2' }, { id: 3, data: 'Record 3' }] },
+        { name: 'Business Rule 2', failedRecords: [{ id: 3, data: 'Record 3' }], allRecords: [{ id: 3, data: 'Record 3' }, { id: 4, data: 'Record 4' }] },
+      ],
+    },
+    {
+      name: 'Process 2',
+      businessRules: [
+        { name: 'Business Rule 3', failedRecords: [{ id: 5, data: 'Record 5' }], allRecords: [{ id: 5, data: 'Record 5' }, { id: 6, data: 'Record 6' }] },
+      ],
+    },
+  ];
 
   const handleAddAttachment = (event) => {
     const file = event.target.files[0];
@@ -72,6 +94,14 @@ const ExceptionWorkflow = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setSelectedException(null);
+  };
+
+  const handleExpandProcess = (index) => {
+    setExpandedProcessIndex(expandedProcessIndex === index ? null : index);
+  };
+
+  const handleToggleRecords = () => {
+    setShowAllRecords(!showAllRecords);
   };
 
   return (
@@ -178,6 +208,39 @@ const ExceptionWorkflow = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h6">Exception Workflow</Typography>
+        {processes.map((process, processIndex) => (
+          <Paper key={processIndex} sx={{ padding: 2, marginBottom: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h6">{process.name}</Typography>
+              <IconButton onClick={() => handleExpandProcess(processIndex)}>
+                {expandedProcessIndex === processIndex ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </IconButton>
+            </Box>
+            {expandedProcessIndex === processIndex && (
+              <Box sx={{ marginTop: 2 }}>
+                {process.businessRules.map((rule, ruleIndex) => (
+                  <Paper key={ruleIndex} sx={{ padding: 2, marginBottom: 2 }}>
+                    <Typography variant="subtitle1">{rule.name}</Typography>
+                    <FormControlLabel
+                      control={<Switch checked={showAllRecords} onChange={handleToggleRecords} />}
+                      label="Show All Records"
+                    />
+                    <Box sx={{ marginTop: 2 }}>
+                      {(showAllRecords ? rule.allRecords : rule.failedRecords).map((record) => (
+                        <Paper key={record.id} sx={{ padding: 1, marginBottom: 1 }}>
+                          {record.data}
+                        </Paper>
+                      ))}
+                    </Box>
+                  </Paper>
+                ))}
+              </Box>
+            )}
+          </Paper>
+        ))}
+      </Box>
     </Box>
   );
 };
