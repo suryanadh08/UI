@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
   Typography,
-  Modal,
-  TextField,
-  Grid,
   Paper,
   IconButton,
-  Select,
-  MenuItem,
+  Button,
+  Switch,
+  FormControlLabel,
+  Modal,
+  TextField,
   FormControl,
   InputLabel,
+  Select,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -21,29 +22,50 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Switch,
-  FormControlLabel,
 } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const ExceptionWorkflow = () => {
-  const [failedBatches, setFailedBatches] = useState([
-    { id: 1, name: 'Batch 1' },
-    { id: 2, name: 'Batch 2' },
-  ]);
-  const [exceptions, setExceptions] = useState([]);
-  const [selectedBatch, setSelectedBatch] = useState('');
-  const [remarks, setRemarks] = useState('');
-  const [attachments, setAttachments] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedException, setSelectedException] = useState(null);
   const [expandedProcessIndex, setExpandedProcessIndex] = useState(null);
   const [showAllRecords, setShowAllRecords] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedBusinessRules, setSelectedBusinessRules] = useState([]);
+  const [remarks, setRemarks] = useState('');
+  const [attachments, setAttachments] = useState([]);
+  const [exceptions, setExceptions] = useState([
+    {
+      id: 1,
+      process: 'Process 1',
+      businessRules: ['Business Rule 1'],
+      remarks: 'Issue with data validation',
+      attachments: [],
+      status: 'Pending Approval',
+    },
+    {
+      id: 2,
+      process: 'Process 2',
+      businessRules: ['Business Rule 3'],
+      remarks: 'Incorrect data format',
+      attachments: [],
+      status: 'Approved',
+    },
+    {
+      id: 3,
+      process: 'Process 3',
+      businessRules: ['Business Rule 5'],
+      remarks: 'Missing required fields',
+      attachments: [],
+      status: 'Rejected',
+    },
+  ]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedException, setSelectedException] = useState(null);
+  const [currentProcess, setCurrentProcess] = useState(null);
+  const [currentRule, setCurrentRule] = useState(null);
 
   const processes = [
     {
@@ -57,9 +79,24 @@ const ExceptionWorkflow = () => {
       name: 'Process 2',
       businessRules: [
         { name: 'Business Rule 3', failedRecords: [{ id: 5, data: 'Record 5' }], allRecords: [{ id: 5, data: 'Record 5' }, { id: 6, data: 'Record 6' }] },
+        { name: 'Business Rule 4', failedRecords: [{ id: 7, data: 'Record 7' }], allRecords: [{ id: 7, data: 'Record 7' }, { id: 8, data: 'Record 8' }] },
+      ],
+    },
+    {
+      name: 'Process 3',
+      businessRules: [
+        { name: 'Business Rule 5', failedRecords: [{ id: 9, data: 'Record 9' }], allRecords: [{ id: 9, data: 'Record 9' }, { id: 10, data: 'Record 10' }] },
       ],
     },
   ];
+
+  const handleExpandProcess = (index) => {
+    setExpandedProcessIndex(expandedProcessIndex === index ? null : index);
+  };
+
+  const handleToggleRecords = () => {
+    setShowAllRecords(!showAllRecords);
+  };
 
   const handleAddAttachment = (event) => {
     const file = event.target.files[0];
@@ -74,16 +111,18 @@ const ExceptionWorkflow = () => {
   const handleSubmitException = () => {
     const newException = {
       id: exceptions.length + 1,
-      batch: selectedBatch,
+      process: currentProcess,
+      businessRules: selectedBusinessRules,
       remarks,
       attachments,
       status: 'Pending Approval',
     };
     setExceptions([...exceptions, newException]);
     setOpenModal(false);
-    setSelectedBatch('');
+    setSelectedBusinessRules([]);
     setRemarks('');
     setAttachments([]);
+    // Send email notification logic here
   };
 
   const handleExceptionClick = (exception) => {
@@ -96,28 +135,23 @@ const ExceptionWorkflow = () => {
     setSelectedException(null);
   };
 
-  const handleExpandProcess = (index) => {
-    setExpandedProcessIndex(expandedProcessIndex === index ? null : index);
-  };
-
-  const handleToggleRecords = () => {
-    setShowAllRecords(!showAllRecords);
+  const handleOpenModal = (process, rule) => {
+    setCurrentProcess(process);
+    setCurrentRule(rule);
+    setSelectedBusinessRules([rule.name]);
+    setOpenModal(true);
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Exception Workflow
-      </Typography>
-      <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenModal(true)}>
-        Trigger Exception
-      </Button>
+    <Box sx={{ marginTop: 4 }}>
+      <Typography variant="h6">Exception Workflow</Typography>
       <Box sx={{ marginTop: 4 }}>
         <Typography variant="h6">Submitted Exceptions</Typography>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Batch</TableCell>
+              <TableCell>Process</TableCell>
+              <TableCell>Business Rules</TableCell>
               <TableCell>Remarks</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Action</TableCell>
@@ -126,7 +160,8 @@ const ExceptionWorkflow = () => {
           <TableBody>
             {exceptions.map((exception) => (
               <TableRow key={exception.id}>
-                <TableCell>{exception.batch}</TableCell>
+                <TableCell>{exception.process}</TableCell>
+                <TableCell>{exception.businessRules.join(', ')}</TableCell>
                 <TableCell>{exception.remarks}</TableCell>
                 <TableCell>{exception.status}</TableCell>
                 <TableCell>
@@ -145,13 +180,20 @@ const ExceptionWorkflow = () => {
             Trigger Exception
           </Typography>
           <FormControl fullWidth sx={{ marginBottom: 2 }}>
-            <InputLabel>Select Batch</InputLabel>
-            <Select value={selectedBatch} onChange={(e) => setSelectedBatch(e.target.value)}>
-              {failedBatches.map((batch) => (
-                <MenuItem key={batch.id} value={batch.name}>
-                  {batch.name}
-                </MenuItem>
-              ))}
+            <InputLabel>Select Business Rules</InputLabel>
+            <Select
+              multiple
+              value={selectedBusinessRules}
+              onChange={(e) => setSelectedBusinessRules(e.target.value)}
+              renderValue={(selected) => selected.join(', ')}
+            >
+              {processes.flatMap((process) =>
+                process.businessRules.map((rule) => (
+                  <MenuItem key={rule.name} value={rule.name}>
+                    {rule.name}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
           <TextField
@@ -188,7 +230,8 @@ const ExceptionWorkflow = () => {
         <DialogContent>
           {selectedException && (
             <Box>
-              <Typography variant="subtitle1">Batch: {selectedException.batch}</Typography>
+              <Typography variant="subtitle1">Process: {selectedException.process}</Typography>
+              <Typography variant="subtitle1">Business Rules: {selectedException.businessRules.join(', ')}</Typography>
               <Typography variant="subtitle1">Remarks: {selectedException.remarks}</Typography>
               <Typography variant="subtitle1">Status: {selectedException.status}</Typography>
               <Box sx={{ marginTop: 2 }}>
@@ -209,7 +252,7 @@ const ExceptionWorkflow = () => {
         </DialogActions>
       </Dialog>
       <Box sx={{ marginTop: 4 }}>
-        <Typography variant="h6">Exception Workflow</Typography>
+        <Typography variant="h6">Failed Processes</Typography>
         {processes.map((process, processIndex) => (
           <Paper key={processIndex} sx={{ padding: 2, marginBottom: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -234,6 +277,9 @@ const ExceptionWorkflow = () => {
                         </Paper>
                       ))}
                     </Box>
+                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenModal(process.name, rule)}>
+                      Trigger Exception
+                    </Button>
                   </Paper>
                 ))}
               </Box>

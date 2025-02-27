@@ -5,6 +5,7 @@ import ProcessControl from './components/ProcessControl';
 import Dashboard from './components/Dashboard';
 import ExceptionWorkflow from './components/ExceptionWorkflow';
 import ConfiguredRules from './components/ConfiguredRules';
+import BatchStatus from './components/BatchStatus';
 
 const App = () => {
   return (
@@ -26,6 +27,9 @@ const App = () => {
           <Button color="inherit" component={Link} to="/configured-rules">
             Configured Rules
           </Button>
+          <Button color="inherit" component={Link} to="/batch-status">
+            Batch Status
+          </Button>
         </Toolbar>
       </AppBar>
       <Box sx={{ padding: 2 }}>
@@ -34,6 +38,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/exception-workflow" element={<ExceptionWorkflow />} />
           <Route path="/configured-rules" element={<ConfiguredRules />} />
+          <Route path="/batch-status" element={<BatchStatus />} />
           <Route path="/" element={<ProcessControl />} />
         </Routes>
       </Box>
