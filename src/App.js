@@ -7,6 +7,8 @@ import ProcessWorkflow from './components/ProcessWorkflow';
 import ConfiguredRules from './components/ConfiguredRules';
 import BatchStatus from './components/BatchStatus';
 import RecordsPage from './components/RecordsPage';
+import UserRoles from './components/UserRoles';
+import Output from './components/Output';
 
 const App = () => {
   return (
@@ -31,6 +33,12 @@ const App = () => {
           <Button color="inherit" component={Link} to="/batch-status">
             Batch Status
           </Button>
+          <Button color="inherit" component={Link} to="/user-roles">
+            User Roles
+          </Button>
+          <Button color="inherit" component={Link} to="/output">
+            Output
+          </Button>
         </Toolbar>
       </AppBar>
       <Box sx={{ padding: 2 }}>
@@ -41,6 +49,8 @@ const App = () => {
           <Route path="/configured-rules" element={<ConfiguredRules />} />
           <Route path="/batch-status" element={<BatchStatus />} />
           <Route path="/records" element={<RecordsPage />} />
+          <Route path="/user-roles" element={<UserRoles />} />
+          <Route path="/output" element={<Output />} />
           <Route path="/" element={<ProcessControl />} />
         </Routes>
       </Box>
