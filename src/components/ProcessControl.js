@@ -13,6 +13,8 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BusinessRule from './BusinessRule';
 import Scheduler from './Scheduler';
+import UserRoles from './UserRoles';
+import Output from './Output';
 
 const ProcessControl = () => {
   const [process, setProcess] = useState({ name: '', businessRules: [] });
@@ -66,6 +68,8 @@ const ProcessControl = () => {
         <Tabs value={selectedTabIndex} onChange={handleTabChange} sx={{ marginBottom: 2 }}>
           <Tab label="Business Rules" />
           <Tab label="Scheduler" />
+          <Tab label="User Roles" />
+          <Tab label="Output" />
         </Tabs>
         {selectedTabIndex === 0 && (
           <Box>
@@ -98,6 +102,8 @@ const ProcessControl = () => {
             setSchedulerConfig={setSchedulerConfig}
           />
         )}
+        {selectedTabIndex === 2 && <UserRoles />}
+        {selectedTabIndex === 3 && <Output />}
       </Paper>
       <Button variant="contained" color="primary" onClick={saveProcess}>
         Save Process

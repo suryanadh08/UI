@@ -12,7 +12,7 @@ import {
   Button,
 } from '@mui/material';
 
-const Output = () => {
+const Output = ({ processId }) => {
   const [outputData, setOutputData] = useState([
     { id: 1, source: 'CustomerID', derived: 'DerivedCustomerID', destination: 'CustomerID', status: 'success', selected: false },
     { id: 2, source: 'AccountNumber', derived: 'DerivedAccountNumber', destination: 'AccountNumber', status: 'failed', selected: false },
@@ -28,13 +28,13 @@ const Output = () => {
 
   const handleExport = () => {
     const selectedRows = outputData.filter((row) => row.selected);
-    console.log('Exporting selected rows:', selectedRows);
+    console.log('Exporting selected rows for Process', processId, ':', selectedRows);
     // Add export logic here
   };
 
   return (
     <Box sx={{ marginTop: 4 }}>
-      <Typography variant="h6">Output</Typography>
+      <Typography variant="h6">Output for Process {processId}</Typography>
       <Paper sx={{ marginTop: 2 }}>
         <Table>
           <TableHead>
