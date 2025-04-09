@@ -11,10 +11,6 @@ import {
   Button,
   Modal,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from '@mui/material';
 
 const UserRoles = () => {
